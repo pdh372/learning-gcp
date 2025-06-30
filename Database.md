@@ -41,3 +41,11 @@ WITH GRANT OPTION -> Give PRIVILEGES for others
 # Create DB
 gcloud sql databases create learning_gcp --instance=yuh
 ```
+
+```bash
+npx prisma migrate dev --name init
+
+npx prisma migrate dev --name ...
+
+npx prisma generate
+```

@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { randomUUID } from 'crypto'; // built-in module
 
@@ -19,11 +19,35 @@ export class AppController {
     this.countRequest++;
     const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
 
-    console.log('⚙️ Instance:', instanceId, 'Request:', this.countRequest);
+    console.info('⚙️ Instance:', instanceId, 'Request:', this.countRequest);
 
     return {
       instance: instanceId,
       requestCount: this.countRequest,
+    };
+  }
+
+  @Post('/user/create')
+  async create() {
+    const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
+
+    const newUser = await this.appService.createUser();
+
+    return {
+      instance: instanceId,
+      data: newUser,
+    };
+  }
+
+  @Get('/user/list')
+  async list() {
+    const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
+
+    const users = await this.appService.getUsers();
+
+    return {
+      instance: instanceId,
+      data: users,
     };
   }
 }
