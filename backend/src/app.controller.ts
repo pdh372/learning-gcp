@@ -17,7 +17,7 @@ export class AppController {
   @Get('/huy')
   huy() {
     this.countRequest++;
-    const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
+    const instanceId = this.instanceId;
 
     console.info('⚙️ Instance:', instanceId, 'Request:', this.countRequest);
 
@@ -29,7 +29,7 @@ export class AppController {
 
   @Post('/user/create')
   async create() {
-    const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
+    const instanceId = this.instanceId;
 
     const newUser = await this.appService.createUser();
 
@@ -41,7 +41,7 @@ export class AppController {
 
   @Get('/user/list')
   async list() {
-    const instanceId = process.env.K_REVISION || this.instanceId; // K_REVISION là unique per container
+    const instanceId = this.instanceId;
 
     const users = await this.appService.getUsers();
 
