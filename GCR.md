@@ -2,7 +2,7 @@
 
 ```bash
 gcloud auth login
-gcloud config set project <PROJECT_ID>
+gcloud config set project learn-gcp-463707
 ```
 
 > **Example**: `gcloud config set project learn-gcp-463707`
@@ -24,22 +24,16 @@ gcloud artifacts repositories create learning-gcp \
 // Build + Push Image
 
 gcloud builds submit \
-  --tag asia-southeast1-docker.pkg.dev/learn-gcp-463707/learning-gcp/learning-gcp-fe
+  --tag gcr.io/learn-gcp-463707/learning-gcp-fe
 
 gcloud builds submit \
-  --tag asia-southeast1-docker.pkg.dev/learn-gcp-463707/learning-gcp/learning-gcp-be
-```
-
-```bash
-gcloud sql instances describe yuh \
-  --project=learn-gcp-463707 \
-  --format="value(connectionName)"
+  --tag gcr.io/learn-gcp-463707/learning-gcp-be
 ```
 
 ```bash
 // Deploy
 gcloud run deploy learning-gcp-fe \
-  --image asia-southeast1-docker.pkg.dev/learn-gcp-463707/learning-gcp/learning-gcp-fe \
+  --image gcr.io/learn-gcp-463707/learning-gcp-fe \
   --platform managed \
   --region asia-southeast1 \
   --allow-unauthenticated \
@@ -48,13 +42,12 @@ gcloud run deploy learning-gcp-fe \
   --concurrency=1
 
 gcloud run deploy learning-gcp-be \
-  --image asia-southeast1-docker.pkg.dev/learn-gcp-463707/learning-gcp/learning-gcp-be \
+  --image gcr.io/learn-gcp-463707/learning-gcp-be \
   --platform managed \
   --region asia-southeast1 \
   --allow-unauthenticated \
   --min-instances=2 \
   --max-instances=2 \
   --concurrency=1 \
-  --env-vars-file=env.yaml \
-  --add-cloudsql-instances=learn-gcp-463707:us-central1:yuh,learn-gcp-463707:us-central1:yuh-replica
+  --env-vars-file env.yaml
 ```
